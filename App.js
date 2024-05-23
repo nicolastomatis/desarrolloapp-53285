@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { AuthProvider, AuthContext } from './src/context/AuthContext';
 import LoginScreen from './src/screens/login';
 import TabBar from './src/components/TabBar';
+import DetalleNorma from './src/screens/detalleNorma';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const AppNavigator = () => {
       ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
       )}
+      <Stack.Screen name="DetalleNorma" component={DetalleNorma} options={{ title: 'Detalle de Obra Social' }} />
     </Stack.Navigator>
   );
 };
