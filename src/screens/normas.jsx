@@ -1,61 +1,60 @@
-// src/components/Normas.jsx
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
-import { fetchData } from '../firebase/firebaseService';
-import DetalleObraSocial from './detalleNorma';
+import React from 'react';
+import { View, ScrollView, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
-const Normas = () => {
-  const [data, setData] = useState([]);
-  const [selectedObraSocial, setSelectedObraSocial] = useState(null);
-
-  useEffect(() => {
-    fetchData(setData);
-  }, []);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Button title={item.Siglas} onPress={() => setSelectedObraSocial(item)} />
-    </View>
-  );
-
-  if (selectedObraSocial) {
-    return <DetalleObraSocial obraSocial={selectedObraSocial} onBack={() => setSelectedObraSocial(null)} />;
+const NormsScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { allData } = route.params || {}; 
+  
+  if (!allData || allData.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text>No hay datos disponibles.</Text>
+      </View>
+    );
   }
 
+  const handlePress = (item) => {
+    navigation.navigate('DetalleScreen', { item });
+
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Normas de Obras Sociales</Text>
-      <FlatList
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>No hay datos disponibles.</Text>}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.buttonsContainer}>
+        {allData.map((item, index) => (
+          <TouchableOpacity key={index} style={styles.boton} onPress={() => handlePress(item)}>
+            <Text>{item.Siglas}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 50,
+    backgroundColor: '#DAD9FF',
   },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  buttonsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 10,
-    marginVertical: 8,
-    marginHorizontal: 16,
+  boton: {
+    width: 100,
+    height: 100,
+    backgroundColor: '#9694FF',
     borderRadius: 10,
-    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
   },
 });
 
-export default Normas;
+export default NormsScreen;

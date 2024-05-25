@@ -1,15 +1,21 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { AuthContext } from '../context/AuthContext';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase/realtimeDataBase'; 
 
 const LoginScreen = ({ navigation }) => {
-  const { login } = useContext(AuthContext);
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Aquí puedes añadir la lógica de autenticación
-    login();
+  const handleLogin = async () => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      Alert.alert('Inicio de sesión exitoso');
+      navigation.navigate('MainApp');
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+      Alert.alert('Error', error.message);
+    }
   };
 
   return (
@@ -17,9 +23,11 @@ const LoginScreen = ({ navigation }) => {
       <Image source={require('../../assets/logo.png')} style={styles.logo} />
       <TextInput
         style={styles.input}
-        placeholder="Usuario"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
@@ -32,10 +40,10 @@ const LoginScreen = ({ navigation }) => {
         <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
       </TouchableOpacity>
       <View style={styles.linksContainer}>
-        <TouchableOpacity onPress={() => { /* Acción de "Olvidé mi contraseña" */ }}>
+        <TouchableOpacity onPress={() => { }}>
           <Text style={styles.linkText}>Olvidé mi <Text style={styles.linkHighlight}>contraseña</Text></Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { /* Acción de "Solicitar usuario a FABA" */ }}>
+        <TouchableOpacity onPress={() => navigation.navigate('MainApp', { screen: 'RegistroUser' })}>
           <Text style={styles.linkText}>Solicitar usuario a <Text style={styles.linkHighlight}>FABA</Text></Text>
         </TouchableOpacity>
       </View>

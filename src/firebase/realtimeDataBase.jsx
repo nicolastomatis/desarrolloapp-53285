@@ -1,29 +1,26 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { 
-  FIREBASE_API_KEY, 
-  FIREBASE_AUTH_DOMAIN, 
-  FIREBASE_DATABASE_URL, 
-  FIREBASE_PROJECT_ID, 
-  FIREBASE_STORAGE_BUCKET, 
-  FIREBASE_MESSAGING_SENDER_ID, 
-  FIREBASE_APP_ID, 
-  FIREBASE_MEASUREMENT_ID 
-} from '@env';
 
 const firebaseConfig = {
-  apiKey: FIREBASE_API_KEY,
-  authDomain: FIREBASE_AUTH_DOMAIN,
-  databaseURL: FIREBASE_DATABASE_URL,
-  projectId: FIREBASE_PROJECT_ID,
-  storageBucket: FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
-  appId: FIREBASE_APP_ID,
-  measurementId: FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyDcc3VuJAuPIIQKCo1fajOPf_DDt_q3bhA",
+  authDomain: "fabapp-3ab37.firebaseapp.com",
+  databaseURL: "https://fabapp-3ab37-default-rtdb.firebaseio.com",
+  projectId: "fabapp-3ab37",
+  storageBucket: "fabapp-3ab37.appspot.com",
+  messagingSenderId: "754449041404",
+  appId: "1:754449041404:web:0ade7f53bf0b540c2bd479",
+  measurementId: "G-K4C94C94WD"
 };
 
 const app = initializeApp(firebaseConfig);
+
 const database = getDatabase(app);
 
-export { database };
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(AsyncStorage)
+});
+
+export { database, auth };

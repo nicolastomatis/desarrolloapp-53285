@@ -1,35 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { AuthProvider, AuthContext } from './src/context/AuthContext';
-import LoginScreen from './src/screens/login';
-import TabBar from './src/components/TabBar';
-import DetalleNorma from './src/screens/detalleNorma';
 
-const Stack = createStackNavigator();
+import Login from './src/screens/login';
+import MainStackNavigator  from './src/components/StackNavigator';
 
-const AppNavigator = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {isLoggedIn ? (
-        <Stack.Screen name="Inicio" component={TabBar} />
-      ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
-      )}
-      <Stack.Screen name="DetalleNorma" component={DetalleNorma} options={{ title: 'Detalle de Obra Social' }} />
-    </Stack.Navigator>
-  );
-};
+const RootStack = createStackNavigator();
 
 const App = () => {
   return (
-    <AuthProvider>
-      <NavigationContainer>
-        <AppNavigator />
-      </NavigationContainer>
-    </AuthProvider>
+    <NavigationContainer>
+      <RootStack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+        <RootStack.Screen name="Login" component={Login} />
+        <RootStack.Screen name="MainApp" component={MainStackNavigator} />
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 };
 

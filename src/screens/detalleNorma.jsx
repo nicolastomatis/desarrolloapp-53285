@@ -1,35 +1,32 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
-const DetalleObraSocial = ({ obraSocial, onBack }) => {
-  const { Nombre, id, Copago, APB, Planes, IngresoPorAOL } = obraSocial;
+const DetalleScreen = ({ route }) => {
+  const { item } = route.params; 
 
   return (
-    <View style={styles.container}>
-        <Text style={styles.title}>{Nombre}</Text>
-        <Text>Mutual: {id}</Text>
-        <Text>Ingreso por AOL: {IngresoPorAOL ? 'Sí' : 'No'}</Text>
-        <Text>Planes: {Array.isArray(Planes) ? Planes.join(', ') : Planes}</Text>
-        <Text>Copago: {Copago ? 'Sí' : 'No'}</Text>
-        <Text>APB: $ {APB}</Text>
-        <Button title="Volver" onPress={onBack} />
-      </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text style={styles.text}>Nombre: {item.Nombre}</Text>
+      <Text style={styles.text}>Siglas: {item.Siglas}</Text>
+      <Text style={styles.text}>Copago: {item.Copago ? 'Sí' : 'No'}</Text>
+      <Text style={styles.text}>APB: {item.APB}</Text>
+      <Text style={styles.text}>Planes: {item.Planes}</Text>
+      <Text style={styles.text}>Ingreso por AOL: {item.IngresoAOL ? 'Sí' : 'No'}</Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
+    padding: 16,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  text: {
+    fontSize: 18,
+    marginBottom: 8,
   },
 });
 
-export default DetalleObraSocial;
+export default DetalleScreen;
+
+
