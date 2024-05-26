@@ -36,3 +36,6 @@ yarn-error.*
 
 # dotenv environment variables file
 .env
+
+# Local Netlify folder
+.netlify
