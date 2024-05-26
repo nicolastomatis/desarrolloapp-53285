@@ -13,6 +13,8 @@ import HelpScreen from '../screens/help';
 import NormsScreen from '../screens/normas';
 import DetalleScreen from '../screens/detalleNorma';
 import EditUser from '../screens/editUser';
+import CierreFacturacion from '../screens/cierreFacturacion';
+import EnvioBolsas from '../screens/envioBolsas';
 
 import HeaderMenu from '../components/headerMenu';
 
@@ -91,6 +93,18 @@ const MainStackNavigator = () => {
         options={{
           headerTitle: '', 
         }} component={EditUser} />
+        <Stack.Screen name="cierreFacturacion"
+          options={{
+            headerTitle: 'Cierre de Facturación', 
+          }} 
+          component={CierreFacturacion} 
+        />
+        <Stack.Screen name="envioBolsas"
+          options={{
+            headerTitle: 'Envío de Bolsas', 
+          }} 
+          component={EnvioBolsas} 
+        />
     </Stack.Navigator>
   </View>
   );
