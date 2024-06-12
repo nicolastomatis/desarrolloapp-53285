@@ -1,8 +1,69 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import * as Print from 'expo-print';
+import { shareAsync } from 'expo-sharing';
 
 const DetalleScreen = ({ route }) => {
-  const { item } = route.params; 
+  const { item } = route.params;
+
+  const generatePdf = async () => {
+    const htmlContent = `
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              background-color: #DAD9FF;
+            }
+            .card {
+              background-color: #9694FF;
+              border-radius: 10px;
+              padding: 16px;
+              margin-bottom: 10px;
+              color: white;
+            }
+            .label {
+              font-size: 22px;
+              font-weight: bold;
+              margin-bottom: 4px;
+            }
+            .value {
+              font-size: 18px;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <div class="label">Nombre:</div>
+            <div class="value">${item.Nombre}</div>
+          </div>
+          <div class="card">
+            <div class="label">Siglas:</div>
+            <div class="value">${item.Siglas}</div>
+          </div>
+          <div class="card">
+            <div class="label">Copago:</div>
+            <div class="value">${item.Copago ? 'Sí' : 'No'}</div>
+          </div>
+          <div class="card">
+            <div class="label">APB:</div>
+            <div class="value">${item.APB}</div>
+          </div>
+          <div class="card">
+            <div class="label">Planes:</div>
+            <div class="value">${item.Planes}</div>
+          </div>
+          <div class="card">
+            <div class="label">Ingreso por AOL:</div>
+            <div class="value">${item.IngresoAOL ? 'Sí' : 'No'}</div>
+          </div>
+        </body>
+      </html>
+    `;
+    const { uri } = await Print.printToFileAsync({ html: htmlContent });
+    await shareAsync(uri);
+  };
 
   return (
     <View style={styles.container}>
@@ -30,6 +91,9 @@ const DetalleScreen = ({ route }) => {
         <Text style={styles.label}>Ingreso por AOL:</Text>
         <Text style={styles.value}>{item.IngresoAOL ? 'Sí' : 'No'}</Text>
       </View>
+      <TouchableOpacity style={styles.button} onPress={generatePdf}>
+        <Text style={styles.buttonText}>Generar PDF</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -63,6 +127,17 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 18,
     color: 'white',
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    padding: 10,
+    borderRadius: 5,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

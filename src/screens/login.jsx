@@ -1,16 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase/realtimeDataBase'; 
+import { auth } from '../firebase/realtimeDataBase';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const checkLoginStatus = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (userToken) {
+        navigation.navigate('MainApp');
+      }
+    } catch (error) {
+      console.error('Error al verificar el estado de inicio de sesión:', error);
+    }
+  };
+
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       Alert.alert('Inicio de sesión exitoso');
+      await AsyncStorage.setItem('userToken', 'true'); 
       navigation.navigate('MainApp');
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
